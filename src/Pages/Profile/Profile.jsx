@@ -1,13 +1,13 @@
 import EditProfile from "../../components/EditProfile/EditProfile";
 import { useQuery } from "@tanstack/react-query";
 import Post from "../../components/Post/Post";
-import Swal from "sweetalert2";
 import AddPost from "../../components/AddPost/AddPost";
 import { useContext } from "react";
 import { UserContext } from "../../Context/UserContext";
 import Skeleton from "../../components/Skeleton/Skeleton";
 import getUserPosts from "../../API/Profile/ProfileApi";
 import NotFound from "../NotFound/NotFound";
+import Alert from "../../components/Alert/Alert";
 
 function Profile() {
   const { userData } = useContext(UserContext);
@@ -21,17 +21,7 @@ function Profile() {
 
   if (isError) {
     const errorMessage = error?.response?.data?.error || "Something went wrong";
-    Swal.fire({
-      title: "Error",
-      text: errorMessage,
-      icon: "error",
-      confirmButtonText: "OK",
-      background: "var(--color-card)",
-      color: "var(--color-card-foreground)",
-      customClass: {
-        popup: "card-enhanced",
-      },
-    });
+    Alert("Error", errorMessage, "error");
   }
 
   if (isLoading) {

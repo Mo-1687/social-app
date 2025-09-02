@@ -2,9 +2,9 @@ import { useContext, useState } from "react";
 import { LuSend } from "react-icons/lu";
 import { UserContext } from "../../Context/UserContext";
 import { useMutation } from "@tanstack/react-query";
-import Swal from "sweetalert2";
 import createComment from "../../API/commentsApi/addCommentApi/addCommentApi";
 import Avatar from "../Avatar/Avatar";
+import Alert from "../Alert/Alert";
 
 function AddComment({ postId, refetch }) {
   const { userData } = useContext(UserContext);
@@ -22,34 +22,16 @@ function AddComment({ postId, refetch }) {
     },
     mutationKey: ["comment", postId],
     onSuccess: () => {
-      Swal.fire({
-        title: "Success",
-        text: data?.data?.message,
-        icon: "success",
-        confirmButtonText: "OK",
-        background: "var(--color-card)",
-        color: "var(--color-card-foreground)",
-        customClass: {
-          popup: "card-enhanced",
-        },
-      });
-
+      const message = data?.data?.message;
+      
+      Alert("Success", message, "success");
       setTimeout(() => {
         refetch();
       }, 1000);
     },
     onError: (error) => {
-      Swal.fire({
-        title: "Error",
-        text: error.response.data.error,
-        icon: "error",
-        confirmButtonText: "OK",
-        background: "var(--color-card)",
-        color: "var(--color-card-foreground)",
-        customClass: {
-          popup: "card-enhanced",
-        },
-      });
+      const message = error?.response?.data?.error;
+      Alert("Error", message, "error");
     },
   });
 
@@ -60,7 +42,11 @@ function AddComment({ postId, refetch }) {
       <div className="card-enhanced glass-effect border border-border/30 shadow-elegant rounded-xl p-4 ">
         <div className="flex items-start gap-4">
           {/* Avatar */}
-          <Avatar photo={userData?.photo} name={userData?.name} id={userData?._id} />
+          <Avatar
+            photo={userData?.photo}
+            name={userData?.name}
+            id={userData?._id}
+          />
 
           {/* Comment Input */}
           <div className="flex-1 space-y-3">

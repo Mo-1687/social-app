@@ -2,7 +2,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import z from "zod";
-import Swal from "sweetalert2";
 import { FaEnvelope, FaLock } from "react-icons/fa";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { useContext, useState } from "react";
@@ -10,6 +9,7 @@ import { UserContext } from "../../Context/UserContext";
 import { useMutation } from "@tanstack/react-query";
 import handleLogin from "../../API/LoginApi/LoginApi";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
+import Alert from "../../components/Alert/Alert";
 
 function Login() {
   const navigate = useNavigate();
@@ -40,17 +40,7 @@ function Login() {
   });
 
   function showAlert(message, condition, icon) {
-    return Swal.fire({
-      title: condition,
-      text: message,
-      icon: icon,
-      confirmButtonText: "OK",
-      background: "var(--color-card)",
-      color: "var(--color-card-foreground)",
-      customClass: {
-        popup: "card-enhanced",
-      },
-    });
+    Alert(condition, message, icon);
   }
 
   const { mutate, isPending } = useMutation({

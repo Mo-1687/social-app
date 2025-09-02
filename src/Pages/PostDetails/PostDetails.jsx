@@ -3,10 +3,10 @@ import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import Comments from "../../components/Comments/Comments";
 import AddComment from "../../components/AddComment/AddComment";
 import { useQuery } from "@tanstack/react-query";
-import Swal from "sweetalert2";
 import getPostDetails from "../../API/postApi/PostDetailsApi/DetalisApi";
 import NotFound from "../NotFound/NotFound";
 import Post from "../../components/Post/Post";
+import Alert from "../../components/Alert/Alert";
 
 function PostDetails() {
   const { id } = useParams();
@@ -19,17 +19,8 @@ function PostDetails() {
   });
 
   if (isError) {
-    Swal.fire({
-      title: "Error",
-      text: error?.response?.data?.error,
-      icon: "error",
-      confirmButtonText: "OK",
-      background: "var(--color-card)",
-      color: "var(--color-card-foreground)",
-      customClass: {
-        popup: "card-enhanced",
-      },
-    });
+    const message = error?.response?.data?.error;
+    Alert("Error", message, "error");
   }
 
   const post = data?.data?.post;
@@ -39,9 +30,9 @@ function PostDetails() {
     return (
       <div className="container-responsive py-6">
         <div className="flex items-center justify-center min-h-[400px]">
-          <div className="card-enhanced p-8 rounded-2xl text-center animate-fade-in">
+          <div className="card-enhanced glass-effect p-8 rounded-2xl text-center animate-fade-in">
             <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-primary flex items-center justify-center animate-pulse-glow">
-              <AiOutlineLoading3Quarters className="text-white text-2xl animate-spin" />
+              <AiOutlineLoading3Quarters className="text-muted-foreground text-2xl animate-spin" />
             </div>
             <p className="text-muted-foreground font-medium">
               Loading post details...
@@ -51,8 +42,9 @@ function PostDetails() {
       </div>
     );
   }
+
   // Wrong Id
-  if (!data) {
+  if (!data || !post) {
     return <NotFound />;
   }
 

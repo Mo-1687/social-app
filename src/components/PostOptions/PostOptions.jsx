@@ -1,42 +1,25 @@
 import axios from "axios";
-import Swal from "sweetalert2";
-
 import { FaEllipsis } from "react-icons/fa6";
 import { FaRegEdit, FaRegTrashAlt } from "react-icons/fa";
 import AddPost from "../AddPost/AddPost";
 import { useMutation } from "@tanstack/react-query";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import Alert from "../Alert/Alert";
 
 function PostOptions({ postId, body, refetch }) {
-  const { mutate } = useMutation({
+  const { mutate, isPending } = useMutation({
     mutationFn: () => deletePost(),
     onSuccess: (data) => {
-      Swal.fire({
-        title: "Success",
-        text: data.data.message,
-        icon: "success",
-        confirmButtonText: "OK",
-        background: "var(--color-card)",
-        color: "var(--color-card-foreground)",
-        customClass: {
-          popup: "card-enhanced",
-        },
-      });
+      const message = data?.data?.message;
+      Alert("Success", message, "success");
+
       setTimeout(() => {
         refetch();
       }, 2000);
     },
     onError: (error) => {
-      Swal.fire({
-        title: "Error",
-        text: error.response.data.error,
-        icon: "error",
-        confirmButtonText: "OK",
-        background: "var(--color-card)",
-        color: "var(--color-card-foreground)",
-        customClass: {
-          popup: "card-enhanced",
-        },
-      });
+      const message = error.response.data.error;
+      Alert("Error", message, "error");
     },
   });
 
@@ -83,7 +66,7 @@ function PostOptions({ postId, body, refetch }) {
         </button>
         <ul
           tabIndex={0}
-          className="dropdown-content menu  backdrop-blur-3xl glass-effect border border-border/50 rounded-xl z-50 w-52 p-2 shadow-elegant"
+          className="dropdown-content menu  bg-card  border border-border/50 rounded-xl z-50 w-52 p-2 shadow-elegant"
           role="menu"
         >
           <li role="menuitem">
@@ -102,7 +85,11 @@ function PostOptions({ postId, body, refetch }) {
               onClick={() => mutate()}
               aria-label={`Delete post ${postId}`}
             >
-              <FaRegTrashAlt size={16} />
+              {isPending ? (
+                <AiOutlineLoading3Quarters className="animate-spin" size={16} />
+              ) : (
+                <FaRegTrashAlt size={16} />
+              )}
               Delete Post
             </button>
           </li>

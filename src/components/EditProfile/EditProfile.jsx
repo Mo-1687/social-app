@@ -1,7 +1,6 @@
 import React, { useContext, useRef } from "react";
 import { CiCalendar } from "react-icons/ci";
 import { UserContext } from "../../Context/UserContext";
-import Swal from "sweetalert2";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { FaUserEdit } from "react-icons/fa";
 import { BsCake2 } from "react-icons/bs";
@@ -9,16 +8,15 @@ import { IoShareOutline } from "react-icons/io5";
 import { useMutation } from "@tanstack/react-query";
 import uploadImage from "../../API/EditProfileApi/EditProfileApi";
 import Avatar from "../Avatar/Avatar";
+import Alert from "../Alert/Alert";
 
 function EditProfile({ postsLength, refetch: getUserPosts }) {
   const { userData, refetch } = useContext(UserContext);
 
   const photoRef = useRef(null);
 
-  
-
-  function cleanDate(date){
-   return new Date(date).toLocaleString("en-US", {
+  function cleanDate(date) {
+    return new Date(date).toLocaleString("en-US", {
       month: "short",
       year: "numeric",
       timeZone: "UTC",
@@ -30,32 +28,14 @@ function EditProfile({ postsLength, refetch: getUserPosts }) {
     onSuccess: (data) => {
       refetch();
       getUserPosts();
-      Swal.fire({
-        title: "Success",
-        text: data.message,
-        icon: "success",
-        confirmButtonText: "OK",
-        background: "var(--color-card)",
-        color: "var(--color-card-foreground)",
-        customClass: {
-          popup: "card-enhanced",
-        },
-      });
+      const message = data?.message;
+      Alert("Success", message, "success");
+    },
+    onError: (error) => {
+      const message = error.response.data.error;
+      Alert("Error", message, "error");
     },
 
-    onError: (error) => {
-      Swal.fire({
-        icon: "error",
-        title: "Upload Failed",
-        text: error.message,
-        confirmButtonText: "OK",
-        background: "var(--color-card)",
-        color: "var(--color-card-foreground)",
-        customClass: {
-          popup: "card-enhanced",
-        },
-      });
-    },
   });
 
   const handleFileChange = (e) => {
@@ -99,14 +79,13 @@ function EditProfile({ postsLength, refetch: getUserPosts }) {
         className=" w-fit h-fit absolute top-3 md-top-3 right-3 bg-card/80 backdrop-blur-md cursor-pointer hover:bg-card/90 px-4 py-2 rounded-xl text-sm font-medium    shadow-sm transition-all duration-300 interactive-hover border border-border/30"
       >
         <span className="flex items-center cursor-pointer gap-2">
-          
-            {isPending ? (
-              <AiOutlineLoading3Quarters className="animate-spin" size={16} />
-            ) : (
-              <>
-                <FaUserEdit /> Edit Photo
-              </>
-            )}
+          {isPending ? (
+            <AiOutlineLoading3Quarters className="animate-spin" size={16} />
+          ) : (
+            <>
+              <FaUserEdit /> Edit Photo
+            </>
+          )}
         </span>
 
         <input
@@ -124,7 +103,9 @@ function EditProfile({ postsLength, refetch: getUserPosts }) {
           {/* Joined Date */}
           <div className="flex items-center gap-2 text-muted-foreground">
             <CiCalendar size={18} className="text-primary" />
-            <span className="font-medium">Joined: {cleanDate(userData?.createdAt)}</span>
+            <span className="font-medium">
+              Joined: {cleanDate(userData?.createdAt)}
+            </span>
           </div>
 
           <div className="flex items-center gap-2 text-muted-foreground">

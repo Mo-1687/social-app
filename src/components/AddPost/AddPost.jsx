@@ -2,12 +2,12 @@ import { useContext, useRef } from "react";
 import { MdOutlineAddPhotoAlternate } from "react-icons/md";
 import { UserContext } from "../../Context/UserContext";
 import { useForm } from "react-hook-form";
-import Swal from "sweetalert2";
 import { useMutation } from "@tanstack/react-query";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import createPostApi from "../../API/postApi/createPostApi/createPostApi";
 import updatePost from "../../API/postApi/updatePostApi/updatePostApi";
 import Avatar from "../Avatar/Avatar";
+import Alert from "../Alert/Alert";
 
 function AddPost({ type, postId, refetch }) {
   const { userData } = useContext(UserContext);
@@ -23,39 +23,20 @@ function AddPost({ type, postId, refetch }) {
   const { mutate: submitPost, isPending } = useMutation({
     mutationFn: (formData) => requestType(formData),
     onSuccess: (data) => {
-      Swal.fire({
-        title: "Success",
-        text: data.data.message,
-        icon: "success",
-        confirmButtonText: "OK",
-        background: "var(--color-card)",
-        color: "var(--color-card-foreground)",
-        customClass: {
-          popup: "card-enhanced",
-        },
-      });
-
       reset();
       if (inputFile.current.files[0]) {
         inputFile.current.value = "";
       }
+      const message = data?.data?.message;
+      Alert("Success", message, "success");
 
       setTimeout(() => {
         refetch();
       }, 2000);
     },
     onError: (error) => {
-      Swal.fire({
-        title: "Error",
-        text: error.response?.data?.error || "Something went wrong",
-        icon: "error",
-        confirmButtonText: "OK",
-        background: "var(--color-card)",
-        color: "var(--color-card-foreground)",
-        customClass: {
-          popup: "card-enhanced",
-        },
-      });
+      const message = error.response?.data?.error;
+      Alert("Error", message, "error");
     },
   });
 
@@ -83,7 +64,11 @@ function AddPost({ type, postId, refetch }) {
       <form onSubmit={handleSubmit(handlePost)}>
         {/* Avatar + Textarea */}
         <div className="flex mb-6 gap-4">
-          <Avatar photo={userData?.photo} name={userData?.name} id={userData?._id}/>
+          <Avatar
+            photo={userData?.photo}
+            name={userData?.name}
+            id={userData?._id}
+          />
 
           <div className="flex-1">
             <textarea

@@ -2,13 +2,13 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import z from "zod";
-import Swal from "sweetalert2";
 import { FaUser, FaEnvelope, FaLock, FaCalendarAlt } from "react-icons/fa";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { useMutation } from "@tanstack/react-query";
 import handleRegister from "../../API/SignupApi/SignupApi";
 import { useState } from "react";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
+import Alert from "../../components/Alert/Alert";
 function Registration() {
   const navigate = useNavigate();
   const [isShown, setIsShown] = useState({
@@ -92,17 +92,7 @@ function Registration() {
   });
 
   function showAlert(message, condition, icon) {
-    return Swal.fire({
-      title: condition,
-      text: message,
-      icon: icon,
-      confirmButtonText: "OK",
-      background: "var(--color-card)",
-      color: "var(--color-card-foreground)",
-      customClass: {
-        popup: "card-enhanced",
-      },
-    });
+    Alert(condition, message, icon);
   }
 
   const formInputs = [

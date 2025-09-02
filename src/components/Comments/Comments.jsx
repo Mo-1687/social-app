@@ -2,49 +2,30 @@ import { useContext } from "react";
 import { UserContext } from "../../Context/UserContext";
 import { FaEllipsisH, FaRegTrashAlt } from "react-icons/fa";
 import { useMutation } from "@tanstack/react-query";
-import Swal from "sweetalert2";
 import deleteComment from "../../API/commentsApi/addCommentApi/deleteComment";
 import Avatar from "../Avatar/Avatar";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import Alert from "../Alert/Alert";
 
 function Comments({ comments, isHome, refetch }) {
   const { userData } = useContext(UserContext);
 
-  const { mutate } = useMutation({
+  const { mutate, isPending } = useMutation({
     mutationFn: (commentId) => deleteComment(commentId),
     onSuccess: (data) => {
-      Swal.fire({
-        title: "Success",
-        text: data.data.message,
-        icon: "success",
-        confirmButtonText: "OK",
-        background: "var(--color-card)",
-        color: "var(--color-card-foreground)",
-        customClass: {
-          popup: "card-enhanced",
-        },
-      });
-
+      const message = data?.data?.message;
+      Alert("Success", message, "success");
+      
       setTimeout(() => {
         refetch();
       }, 1000);
     },
 
     onError: (error) => {
-      Swal.fire({
-        title: "Error",
-        text: error.response.data.error,
-        icon: "error",
-        confirmButtonText: "OK",
-        background: "var(--color-card)",
-        color: "var(--color-card-foreground)",
-        customClass: {
-          popup: "card-enhanced",
-        },
-      });
+      const message = error.response.data.error;
+      Alert("Error", message, "error");
     },
   });
-
-  
 
   function getDate(date) {
     return new Date(date).toLocaleDateString("en-US", {
@@ -67,7 +48,11 @@ function Comments({ comments, isHome, refetch }) {
           >
             <div className="flex items-start gap-3">
               {/* User Avatar */}
-              <Avatar photo={comment.commentCreator.photo} name={comment.commentCreator.name} id={comment.commentCreator._id} />
+              <Avatar
+                photo={comment.commentCreator.photo}
+                name={comment.commentCreator.name}
+                id={comment.commentCreator._id}
+              />
 
               {/* Comment Content */}
               <div className="flex-1 min-w-0">
@@ -103,7 +88,14 @@ function Comments({ comments, isHome, refetch }) {
                           className="flex items-center gap-2 text-destructive hover:bg-destructive/10 hover:text-destructive transition-all duration-300 cursor-pointer px-3 py-2 rounded-lg"
                           onClick={() => mutate(comment._id)}
                         >
-                          <FaRegTrashAlt size={14} />
+                          {isPending ? (
+                            <AiOutlineLoading3Quarters
+                              className="animate-spin"
+                              size={16}
+                            />
+                          ) : (
+                            <FaRegTrashAlt size={14} />
+                          )}
                           Delete
                         </button>
                       </li>
