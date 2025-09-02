@@ -91,7 +91,7 @@ function Aside() {
 
           {/* User Profile */}
           <div className="card-enhanced glass-effect flex items-center group  gap-3 p-2 rounded-lg hover:bg-sidebar-accent transition-all duration-300 interactive-hover">
-            <div className="w-11 h-11 flex-shrink-0">
+            <div className="w-10 h-10 flex-shrink-0">
               <Avatar photo={userData?.photo} name={userData?.name} />
             </div>
             <div>

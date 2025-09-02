@@ -9,7 +9,7 @@ function Layout() {
 
       {/* Main Content */}
       <div
-        className=" flex-1 sm:px-8 py-8 overflow-hidden bg-muted/30 backdrop-blur-sm relative
+        className=" flex-1 lg:px-8 py-8 overflow-hidden bg-muted/30 backdrop-blur-sm relative
           xl:ml-64"
       >
         {/* Decorative Background Elements */}
@@ -18,7 +18,7 @@ function Layout() {
           <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-gradient-accent/5 rounded-full blur-3xl"></div>
         </div>
 
-        <div className="container-responsive  max-w-4xl mx-auto  py-4 sm:px-6 sm:py-6 lg:px-6  ">
+        <div className="container-responsive w-full md:max-w-4xl mx-auto  py-4  sm:py-6   ">
           <Outlet />
         </div>
       </div>
