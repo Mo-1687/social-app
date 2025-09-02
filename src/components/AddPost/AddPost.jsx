@@ -1,18 +1,24 @@
 import { useContext, useRef } from "react";
 import { MdOutlineAddPhotoAlternate } from "react-icons/md";
-import { Link } from "react-router-dom";
 import { UserContext } from "../../Context/UserContext";
 import { useForm } from "react-hook-form";
-import axios from "axios";
 import Swal from "sweetalert2";
 import { useMutation } from "@tanstack/react-query";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import createPostApi from "../../API/postApi/createPostApi/createPostApi";
+import updatePost from "../../API/postApi/updatePostApi/updatePostApi";
+import Avatar from "../Avatar/Avatar";
 
 function AddPost({ type, postId, refetch }) {
   const { userData } = useContext(UserContext);
 
   const inputFile = useRef(null);
-  const { register, handleSubmit, reset, formState: { errors } } = useForm();
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm();
 
   const { mutate: submitPost, isPending } = useMutation({
     mutationFn: (formData) => requestType(formData),
@@ -22,11 +28,11 @@ function AddPost({ type, postId, refetch }) {
         text: data.data.message,
         icon: "success",
         confirmButtonText: "OK",
-        background: 'var(--color-card)',
-        color: 'var(--color-card-foreground)',
+        background: "var(--color-card)",
+        color: "var(--color-card-foreground)",
         customClass: {
-          popup: 'card-enhanced'
-        }
+          popup: "card-enhanced",
+        },
       });
 
       reset();
@@ -44,34 +50,26 @@ function AddPost({ type, postId, refetch }) {
         text: error.response?.data?.error || "Something went wrong",
         icon: "error",
         confirmButtonText: "OK",
-        background: 'var(--color-card)',
-        color: 'var(--color-card-foreground)',
+        background: "var(--color-card)",
+        color: "var(--color-card-foreground)",
         customClass: {
-          popup: 'card-enhanced'
-        }
+          popup: "card-enhanced",
+        },
       });
     },
   });
 
   async function requestType(formData) {
     if (type === "post") {
-      return await axios.post(
-        "https://linked-posts.routemisr.com/posts",
-        formData,
-        { headers: { token: localStorage.getItem("token") } }
-      );
+      return createPostApi(formData);
     } else {
-      return await axios.put(
-        `https://linked-posts.routemisr.com/posts/${postId}`,
-        formData,
-        { headers: { token: localStorage.getItem("token") } }
-      );
+      return updatePost(formData, postId);
     }
   }
 
   function handlePost(values) {
     if (!values.body?.trim()) return;
-    
+
     const formData = new FormData();
     if (inputFile.current.files[0]) {
       formData.append("image", inputFile.current.files[0]);
@@ -81,19 +79,11 @@ function AddPost({ type, postId, refetch }) {
   }
 
   return (
-    <div className="mb-8 card-enhanced rounded-2xl p-6 animate-fade-in">
+    <div className="mb-8 bg-post-bg card-enhanced group glass-effect interactive-hover animate-fade-in p-6 rounded-2xl  border-2 border-border/30  overflow-hidden">
       <form onSubmit={handleSubmit(handlePost)}>
         {/* Avatar + Textarea */}
         <div className="flex mb-6 gap-4">
-          <Link to={"/profile"} className="interactive-hover">
-            <div className="w-12 h-12 rounded-full ring-2 ring-primary ring-offset-2 ring-offset-background flex-shrink-0 overflow-hidden transition-all duration-300 hover:ring-primary-glow">
-              <img
-                src={userData?.photo || "https://i.pravatar.cc/100"}
-                alt={userData?.name || "User"}
-                className="w-full h-full object-cover"
-              />
-            </div>
-          </Link>
+          <Avatar photo={userData?.photo} name={userData?.name} id={userData?._id}/>
 
           <div className="flex-1">
             <textarea
@@ -101,7 +91,7 @@ function AddPost({ type, postId, refetch }) {
                 required: "Please write something before posting",
                 minLength: { value: 1, message: "Post cannot be empty" },
               })}
-              className={`w-full p-4 text-sm border-2  border-accent-foreground  bg-card text-card-foreground rounded-xl resize-none placeholder-muted-foreground transition-all duration-300 ${
+              className={`w-full p-6 text-sm border-2  border-accent-foreground  bg-card text-card-foreground rounded-xl resize-none placeholder-muted-foreground transition-all duration-300 ${
                 errors.body
                   ? "border-destructive focus:border-destructive focus:ring-destructive"
                   : "  outline-none focus:outline-none focus:ring-1 focus:ring-purple-500"
@@ -149,7 +139,7 @@ function AddPost({ type, postId, refetch }) {
           <button
             type="submit"
             disabled={isPending}
-            className={`gradient-primary text-primary-foreground py-2.5 px-6 rounded-xl font-semibold shadow-lg transition-all duration-300 flex items-center gap-2 min-w-[100px] justify-center ${
+            className={`gradient-primary text-primary-foreground py-2.5 px-6 rounded-xl font-semibold shadow-lg transition-all duration-300 flex items-center gap-2 cursor-pointer min-w-[100px] justify-center ${
               isPending
                 ? "opacity-70 cursor-not-allowed"
                 : "btn-glow hover:shadow-xl active:scale-95"

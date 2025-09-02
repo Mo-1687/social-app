@@ -15,6 +15,11 @@ function PostOptions({ postId, body, refetch }) {
         text: data.data.message,
         icon: "success",
         confirmButtonText: "OK",
+        background: "var(--color-card)",
+        color: "var(--color-card-foreground)",
+        customClass: {
+          popup: "card-enhanced",
+        },
       });
       setTimeout(() => {
         refetch();
@@ -26,6 +31,11 @@ function PostOptions({ postId, body, refetch }) {
         text: error.response.data.error,
         icon: "error",
         confirmButtonText: "OK",
+        background: "var(--color-card)",
+        color: "var(--color-card-foreground)",
+        customClass: {
+          popup: "card-enhanced",
+        },
       });
     },
   });
@@ -64,37 +74,36 @@ function PostOptions({ postId, body, refetch }) {
   return (
     <>
       <div className="dropdown dropdown-end">
-        <div
+        <button
           tabIndex={0}
-          role="button"
-          className="cursor-pointer rounded-full py-1 px-2 hover:bg-[#B874FB] hover:text-white transition-all duration-200 m-1"
+          className="cursor-pointer rounded-full p-2 hover:bg-primary/20 hover:text-primary transition-all duration-300 interactive-hover"
           aria-label="Post options menu"
         >
-          <FaEllipsis />
-        </div>
+          <FaEllipsis size={16} />
+        </button>
         <ul
           tabIndex={0}
-          className="dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm"
+          className="dropdown-content menu  backdrop-blur-3xl glass-effect border border-border/50 rounded-xl z-50 w-52 p-2 shadow-elegant"
           role="menu"
         >
           <li role="menuitem">
             <button
-              className="hover:bg-[#B874FB] hover:text-white rounded-xl"
+              className="flex items-center gap-3 w-full px-4 py-3 text-left hover:bg-primary/10 hover:text-primary rounded-lg transition-all duration-300 font-medium"
               onClick={handleEditClick}
               aria-label={`Edit post ${postId}`}
             >
-              <FaRegEdit />
-              Edit
+              <FaRegEdit size={16} />
+              Edit Post
             </button>
           </li>
           <li role="menuitem">
             <button
-              className="hover:bg-[#B874FB] hover:text-white text-red-600 rounded-xl"
+              className="flex items-center gap-3 w-full px-4 py-3 text-left hover:bg-destructive/10 hover:text-destructive rounded-lg transition-all duration-300 font-medium"
               onClick={() => mutate()}
               aria-label={`Delete post ${postId}`}
             >
-              <FaRegTrashAlt />
-              Delete
+              <FaRegTrashAlt size={16} />
+              Delete Post
             </button>
           </li>
         </ul>
@@ -102,17 +111,23 @@ function PostOptions({ postId, body, refetch }) {
 
       <dialog
         id={`edit_modal_${postId}`}
-        className="modal"
+        className="modal "
         aria-labelledby={`edit_modal_title_${postId}`}
         aria-describedby={`edit_modal_desc_${postId}`}
       >
-        <div className="modal-box">
-          <h2
-            id={`edit_modal_title_${postId}`}
-            className="font-bold text-lg mb-4"
-          >
-            Edit Post
-          </h2>
+        <div className="modal-box card-enhanced glass-effect ">
+          <div className="flex items-center justify-between mb-6">
+            <h2
+              id={`edit_modal_title_${postId}`}
+              className="text-2xl font-bold text-foreground"
+            >
+              ✏️ Edit Post
+            </h2>
+            <div className="w-8 h-8 rounded-full bg-gradient-primary flex items-center justify-center">
+              <span className="text-white text-sm">📝</span>
+            </div>
+          </div>
+
           <div id={`edit_modal_desc_${postId}`} className="sr-only">
             Modal to edit your post content
           </div>
@@ -124,8 +139,11 @@ function PostOptions({ postId, body, refetch }) {
             refetch={refetch}
           />
 
-          <form method="dialog">
-            <button className="btn mt-4" aria-label="Close edit modal">
+          <form method="dialog" className="mt-6">
+            <button
+              className="w-full py-3 px-6 bg-muted text-muted-foreground rounded-xl font-medium hover:bg-muted/80 transition-all duration-300 interactive-hover"
+              aria-label="Close edit modal"
+            >
               Close
             </button>
           </form>

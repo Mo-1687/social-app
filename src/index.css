@@ -1,52 +1,59 @@
+@import "tailwindcss";
+@plugin "daisyui";
+
 /* Tailwind CSS v4.1 Theme Definitions */
 @theme {
   /* Colors - Light and Dark Mode Auto-switching */
   --color-background: light-dark(hsl(0 0% 98%), hsl(222 20% 6%));
   --color-foreground: light-dark(hsl(240 10% 15%), hsl(210 40% 98%));
-  
+
   --color-card: light-dark(hsl(0 0% 100%), hsl(220 18% 8%));
   --color-card-foreground: light-dark(hsl(240 10% 15%), hsl(210 40% 98%));
-  
+
   --color-popover: light-dark(hsl(0 0% 100%), hsl(220 18% 8%));
   --color-popover-foreground: light-dark(hsl(240 10% 15%), hsl(210 40% 98%));
-  
+
   --color-primary: hsl(270 95% 65%);
   --color-primary-foreground: hsl(0 0% 98%);
   --color-primary-glow: hsl(270 95% 75%);
-  
+
   --color-secondary: light-dark(hsl(240 4.8% 95.9%), hsl(217 25% 22%));
   --color-secondary-foreground: light-dark(hsl(240 5.9% 10%), hsl(210 40% 98%));
-  
+
   --color-muted: light-dark(hsl(240 4.8% 95.9%), hsl(217 25% 18%));
   --color-muted-foreground: light-dark(hsl(240 3.8% 46.1%), hsl(215 20% 65%));
-  
+
   --color-accent: hsl(270 95% 65%);
   --color-accent-foreground: hsl(0 0% 98%);
-  
+
   --color-destructive: light-dark(hsl(0 84.2% 60.2%), hsl(0 75% 58%));
   --color-destructive-foreground: hsl(0 0% 98%);
-  
+
   --color-border: light-dark(hsl(240 5.9% 90%), hsl(217 25% 18%));
   --color-input: light-dark(hsl(240 5.9% 90%), hsl(217 25% 18%));
   --color-ring: hsl(270 95% 65%);
-  
+
   /* Social Media Colors */
   --color-post-bg: light-dark(hsl(0 0% 100%), hsl(220 18% 9%));
   --color-hover-bg: light-dark(hsl(240 4.8% 95.9%), hsl(217 25% 20%));
-  --color-like: light-dark(hsl(350 84% 60%), hsl(350 100% 75%));
-  --color-share: light-dark(hsl(200 84% 60%), hsl(200 100% 75%));
   --color-comment: light-dark(hsl(150 84% 45%), hsl(150 100% 75%));
-  
+
   /* Sidebar Colors */
   --color-sidebar: light-dark(hsl(0 0% 98%), hsl(240 5.9% 10%));
-  --color-sidebar-foreground: light-dark(hsl(240 5.3% 26.1%), hsl(240 4.8% 95.9%));
+  --color-sidebar-foreground: light-dark(
+    hsl(240 5.3% 26.1%),
+    hsl(240 4.8% 95.9%)
+  );
   --color-sidebar-primary: light-dark(hsl(240 5.9% 10%), hsl(224.3 76.3% 48%));
   --color-sidebar-primary-foreground: light-dark(hsl(0 0% 98%), hsl(0 0% 100%));
   --color-sidebar-accent: light-dark(hsl(240 4.8% 95.9%), hsl(240 3.7% 15.9%));
-  --color-sidebar-accent-foreground: light-dark(hsl(240 5.9% 10%), hsl(240 4.8% 95.9%));
+  --color-sidebar-accent-foreground: light-dark(
+    hsl(240 5.9% 10%),
+    hsl(240 4.8% 95.9%)
+  );
   --color-sidebar-border: light-dark(hsl(220 13% 91%), hsl(240 3.7% 15.9%));
   --color-sidebar-ring: hsl(217.2 91.2% 59.8%);
-  
+
   /* Spacing */
   --spacing-xs: 0.25rem;
   --spacing-sm: 0.5rem;
@@ -55,7 +62,7 @@
   --spacing-xl: 2rem;
   --spacing-2xl: 3rem;
   --spacing-3xl: 4rem;
-  
+
   /* Border Radius */
   --radius-xs: 0.25rem;
   --radius-sm: 0.375rem;
@@ -64,16 +71,28 @@
   --radius-xl: 1rem;
   --radius-2xl: 1.5rem;
   --radius-full: 9999px;
-  
+
   /* Shadows */
   --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-  --shadow-elegant: light-dark(0 10px 30px -10px hsl(270 95% 65% / 0.15), 0 10px 30px -10px hsl(270 95% 20% / 0.3));
-  --shadow-glow: light-dark(0 0 40px hsl(270 95% 65% / 0.1), 0 0 40px hsl(270 95% 65% / 0.15));
-  --shadow-card: light-dark(0 4px 20px -2px hsl(0 0% 0% / 0.08), 0 4px 20px -2px hsl(0 0% 0% / 0.3));
-  
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+    0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
+    0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  --shadow-elegant: light-dark(
+    0 10px 30px -10px hsl(270 95% 65% / 0.15),
+    0 10px 30px -10px hsl(270 95% 20% / 0.3)
+  );
+  --shadow-glow: light-dark(
+    0 0 40px hsl(270 95% 65% / 0.1),
+    0 0 40px hsl(270 95% 65% / 0.15)
+  );
+  --shadow-card: light-dark(
+    0 4px 20px -2px hsl(0 0% 0% / 0.08),
+    0 4px 20px -2px hsl(0 0% 0% / 0.3)
+  );
+
   /* Typography */
   --font-size-xs: 0.75rem;
   --font-size-sm: 0.875rem;
@@ -83,22 +102,22 @@
   --font-size-2xl: 1.5rem;
   --font-size-3xl: 1.875rem;
   --font-size-4xl: 2.25rem;
-  
+
   --font-weight-normal: 400;
   --font-weight-medium: 500;
   --font-weight-semibold: 600;
   --font-weight-bold: 700;
-  
+
   /* Line Heights */
   --line-height-tight: 1.25;
   --line-height-normal: 1.5;
   --line-height-relaxed: 1.625;
-  
+
   /* Transitions */
   --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
   --transition-normal: 300ms cubic-bezier(0.4, 0, 0.2, 1);
   --transition-slow: 500ms cubic-bezier(0.4, 0, 0.2, 1);
-  
+
   /* Breakpoints for Responsive Design */
   --breakpoint-sm: 640px;
   --breakpoint-md: 768px;
@@ -108,8 +127,18 @@
 }
 
 /* Custom Utility Classes */
+
+
+@utility flex-all {
+  @apply flex items-center justify-center;
+}
+
 @utility gradient-primary {
-  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-glow));
+  background: linear-gradient(
+    135deg,
+    var(--color-primary),
+    var(--color-primary-glow)
+  );
 }
 
 @utility gradient-secondary {
@@ -126,6 +155,17 @@
   );
 }
 
+.gradient-text {
+  background: linear-gradient(
+    135deg,
+    var(--color-primary, #ff0000), 
+    var(--color-primary-glow, #00ff00)
+  );
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
 @utility gradient-subtle {
   background: light-dark(
     linear-gradient(180deg, hsl(0 0% 100%), hsl(240 4.8% 97%)),
@@ -134,24 +174,19 @@
 }
 
 @utility glass-effect {
+  -webkit-backdrop-filter: blur(20px);
   backdrop-filter: blur(20px);
-  background: light-dark(
-    rgba(255, 255, 255, 0.8),
-    rgba(255, 255, 255, 0.02)
-  );
-  border: 1px solid light-dark(
-    rgba(255, 255, 255, 0.2),
-    rgba(255, 255, 255, 0.05)
-  );
+  background: light-dark(rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.02));
+  border: 1px solid
+    light-dark(rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.05));
 }
 
 @utility card-enhanced {
   box-shadow: var(--shadow-card);
+  -webkit-backdrop-filter: blur(12px);
   backdrop-filter: blur(12px);
-  border: 1px solid light-dark(
-    hsl(var(--color-border) / 0.3),
-    hsl(var(--color-border) / 0.3)
-  );
+  border: 1px solid
+    light-dark(hsl(var(--color-border) / 0.3), hsl(var(--color-border) / 0.3));
   background: linear-gradient(
     135deg,
     light-dark(hsl(var(--color-card) / 0.7), hsl(var(--color-card) / 0.7)),
@@ -159,39 +194,40 @@
   );
   position: relative;
   overflow: hidden;
-
-  /* Define the ::before pseudo-element within the utility */
   &::before {
-    content: '';
+    content: "";
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
     height: 1px;
-    background: linear-gradient(90deg, transparent, hsl(var(--color-primary) / 0.3), transparent);
+    background: linear-gradient(
+      90deg,
+      transparent,
+      hsl(var(--color-primary) / 0.3),
+      transparent
+    );
   }
 }
 
 @utility btn-glow {
   box-shadow: var(--shadow-glow);
   transition: var(--transition-normal);
-}
-
-@utility btn-glow:hover {
-  box-shadow: light-dark(
-    0 0 60px hsl(var(--color-primary) / 0.15),
-    0 0 60px hsl(var(--color-primary) / 0.25)
-  );
-  transform: translateY(-1px);
+  &:hover {
+    box-shadow: light-dark(
+      0 0 60px hsl(var(--color-primary) / 0.15),
+      0 0 60px hsl(var(--color-primary) / 0.25)
+    );
+    transform: translateY(-1px);
+  }
 }
 
 @utility interactive-hover {
   transition: var(--transition-normal);
-}
-
-@utility interactive-hover:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-elegant);
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-elegant);
+  }
 }
 
 @utility gradient-text {
@@ -218,45 +254,33 @@
   animation: pulseGlow 2s ease-in-out infinite;
 }
 
-/* Responsive Container Utilities */
+/* === CORRECTED RESPONSIVE UTILITIES START === */
+
+/* Responsive Container Utility */
 @utility container-responsive {
   width: 100%;
   margin-left: auto;
   margin-right: auto;
   padding-left: 1rem;
   padding-right: 1rem;
-}
 
-@media (min-width: 640px) {
-  @utility container-responsive {
+  @media (min-width: 640px) {
     max-width: 640px;
     padding-left: 1.5rem;
     padding-right: 1.5rem;
   }
-}
-
-@media (min-width: 768px) {
-  @utility container-responsive {
+  @media (min-width: 768px) {
     max-width: 768px;
     padding-left: 2rem;
     padding-right: 2rem;
   }
-}
-
-@media (min-width: 1024px) {
-  @utility container-responsive {
+  @media (min-width: 1024px) {
     max-width: 1024px;
   }
-}
-
-@media (min-width: 1280px) {
-  @utility container-responsive {
+  @media (min-width: 1280px) {
     max-width: 1280px;
   }
-}
-
-@media (min-width: 1536px) {
-  @utility container-responsive {
+  @media (min-width: 1536px) {
     max-width: 1536px;
   }
 }
@@ -293,22 +317,17 @@
   }
 }
 
-/* Grid Utilities for Responsive Layouts */
+/* Grid Utility for Responsive Layouts */
 @utility grid-responsive {
   display: grid;
   gap: 1rem;
   grid-template-columns: 1fr;
-}
 
-@media (min-width: 640px) {
-  @utility grid-responsive {
+  @media (min-width: 640px) {
     grid-template-columns: repeat(2, 1fr);
     gap: 1.5rem;
   }
-}
-
-@media (min-width: 1024px) {
-  @utility grid-responsive {
+  @media (min-width: 1024px) {
     grid-template-columns: repeat(3, 1fr);
     gap: 2rem;
   }
@@ -318,10 +337,8 @@
 @utility text-responsive-sm {
   font-size: var(--font-size-sm);
   line-height: var(--line-height-normal);
-}
 
-@media (min-width: 768px) {
-  @utility text-responsive-sm {
+  @media (min-width: 768px) {
     font-size: var(--font-size-base);
   }
 }
@@ -329,16 +346,11 @@
 @utility text-responsive-lg {
   font-size: var(--font-size-lg);
   line-height: var(--line-height-tight);
-}
 
-@media (min-width: 768px) {
-  @utility text-responsive-lg {
+  @media (min-width: 768px) {
     font-size: var(--font-size-xl);
   }
-}
-
-@media (min-width: 1024px) {
-  @utility text-responsive-lg {
+  @media (min-width: 1024px) {
     font-size: var(--font-size-2xl);
   }
 }
@@ -346,25 +358,19 @@
 @utility text-responsive-xl {
   font-size: var(--font-size-xl);
   line-height: var(--line-height-tight);
-}
 
-@media (min-width: 768px) {
-  @utility text-responsive-xl {
+  @media (min-width: 768px) {
     font-size: var(--font-size-2xl);
   }
-}
-
-@media (min-width: 1024px) {
-  @utility text-responsive-xl {
+  @media (min-width: 1024px) {
     font-size: var(--font-size-3xl);
   }
-}
-
-@media (min-width: 1280px) {
-  @utility text-responsive-xl {
+  @media (min-width: 1280px) {
     font-size: var(--font-size-4xl);
   }
 }
+
+/* === CORRECTED RESPONSIVE UTILITIES END === */
 
 /* Keyframes */
 @keyframes fadeIn {
@@ -390,7 +396,8 @@
 }
 
 @keyframes bounceSubtle {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateY(0);
   }
   50% {
@@ -399,7 +406,8 @@
 }
 
 @keyframes pulseGlow {
-  0%, 100% {
+  0%,
+  100% {
     box-shadow: var(--shadow-glow);
   }
   50% {

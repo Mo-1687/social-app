@@ -46,78 +46,88 @@ function Pagination({
     <>
       {/* Pagination - Only show if we have multiple pages */}
       {totalPages > 1 && (
-        <div className="flex items-center justify-center space-x-2">
-          <button
-            className="btn border-gray-600 bg-[#09090B] hover:custom-bg flex items-center space-x-1 disabled:opacity-50"
-            onClick={handlePrevPage}
-            disabled={currentPage === 1 || isLoading}
-          >
-            <FaChevronLeft size={16} />
-            <span>Previous</span>
-          </button>
+        <div className="card-enhanced p-6 rounded-2xl animate-fade-in">
+          <div className="flex items-center justify-center space-x-3">
+            {/* Previous Button */}
+            <button
+              className="flex items-center gap-2 px-4 py-2 rounded-xl font-medium transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed bg-muted text-muted-foreground hover:bg-muted/80 hover:text-foreground interactive-hover"
+              onClick={handlePrevPage}
+              disabled={currentPage === 1 || isLoading}
+            >
+              <FaChevronLeft size={16} />
+              <span>Previous</span>
+            </button>
 
-          <div className="flex items-center space-x-1">
-            {/* Show first page if not in visible range */}
-            {getPaginationNumbers()[0] > 1 && (
-              <>
-                <button
-                  className=" bg-[#27272A] btn outline border-none outline-none hover:custom-bg disabled:opacity-50"
-                  onClick={() => handlePageClick(1)}
-                  disabled={isLoading}
-                >
-                  1
-                </button>
-                {getPaginationNumbers()[0] > 2 && (
-                  <span className="text-gray-400 px-2">...</span>
-                )}
-              </>
-            )}
+            {/* Page Numbers */}
+            <div className="flex items-center space-x-2">
+              {/* Show first page if not in visible range */}
+              {getPaginationNumbers()[0] > 1 && (
+                <>
+                  <button
+                    className="w-10 h-10 rounded-xl font-medium transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed bg-muted text-muted-foreground hover:bg-primary hover:text-primary-foreground interactive-hover"
+                    onClick={() => handlePageClick(1)}
+                    disabled={isLoading}
+                  >
+                    1
+                  </button>
+                  {getPaginationNumbers()[0] > 2 && (
+                    <span className="text-muted-foreground px-2">•••</span>
+                  )}
+                </>
+              )}
 
-            {/* Show pagination numbers */}
-            {getPaginationNumbers().map((pageNumber) => {
-              return (
-                <button
-                  className={`btn ${
-                    pageNumber === currentPage
-                      ? "custom-bg"
-                      : "bg-[#27272A] btn outline"
-                  } border-none outline-none hover:bg-primary disabled:opacity-50`}
-                  key={pageNumber}
-                  onClick={() => handlePageClick(pageNumber)}
-                  disabled={isLoading}
-                >
-                  {pageNumber}
-                </button>
-              );
-            })}
+              {/* Show pagination numbers */}
+              {getPaginationNumbers().map((pageNumber) => {
+                return (
+                  <button
+                    className={`w-10 h-10 rounded-xl font-medium transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed interactive-hover ${
+                      pageNumber === currentPage
+                        ? "gradient-primary text-primary-foreground shadow-elegant"
+                        : "bg-muted text-muted-foreground hover:bg-primary hover:text-primary-foreground"
+                    }`}
+                    key={pageNumber}
+                    onClick={() => handlePageClick(pageNumber)}
+                    disabled={isLoading}
+                  >
+                    {pageNumber}
+                  </button>
+                );
+              })}
 
-            {/* Show last page if not in visible range */}
-            {getPaginationNumbers()[getPaginationNumbers().length - 1] <
-              totalPages && (
-              <>
-                {getPaginationNumbers()[getPaginationNumbers().length - 1] <
-                  totalPages - 1 && (
-                  <span className="text-gray-400 px-2">...</span>
-                )}
-                <button
-                  className="btn bg-[#27272A]  outline border-none outline-none hover:bg-primary disabled:opacity-50"
-                  onClick={() => handlePageClick(totalPages)}
-                  disabled={isLoading}
-                >
-                  {totalPages}
-                </button>
-              </>
-            )}
+              {/* Show last page if not in visible range */}
+              {getPaginationNumbers()[getPaginationNumbers().length - 1] <
+                totalPages && (
+                <>
+                  {getPaginationNumbers()[getPaginationNumbers().length - 1] <
+                    totalPages - 1 && (
+                    <span className="text-muted-foreground px-2">•••</span>
+                  )}
+                  <button
+                    className="w-10 h-10 rounded-xl font-medium transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed bg-muted text-muted-foreground hover:bg-primary hover:text-primary-foreground interactive-hover"
+                    onClick={() => handlePageClick(totalPages)}
+                    disabled={isLoading}
+                  >
+                    {totalPages}
+                  </button>
+                </>
+              )}
+            </div>
+
+            {/* Next Button */}
+            <button
+              className="flex items-center gap-2 px-4 py-2 rounded-xl font-medium transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed bg-muted text-muted-foreground hover:bg-muted/80 hover:text-foreground interactive-hover"
+              onClick={handleNextPage}
+              disabled={currentPage === totalPages || isLoading}
+            >
+              <span>Next</span>
+              <FaChevronRight size={16} />
+            </button>
           </div>
 
-          <button
-            className="btn bg-[#09090B] hover:bg-primary border-gray-600 flex items-center space-x-1 disabled:opacity-50"
-            onClick={handleNextPage}
-            disabled={currentPage === totalPages || isLoading}
-          >
-            <span>Next</span>
-            <FaChevronRight size={16} />
-          </button>
+          {/* Page Info */}
+          <div className="text-center mt-4 text-sm text-muted-foreground">
+            Page {currentPage} of {totalPages} • {totalPosts} total posts
+          </div>
         </div>
       )}
     </>

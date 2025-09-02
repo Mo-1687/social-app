@@ -1,18 +1,17 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import Layout from "./components/Layout/Layout";
-import Profile from "./components/Profile/Profile";
-import Home from "./components/Home/Home";
-import Login from "./components/Login/Login";
-import Registration from "./components/Registration/Registration";
-import NotFound from "./components/NotFound/NotFound";
+import Layout from "./Pages/Layout/MainLayout/Layout";
+import Profile from "./Pages/Profile/Profile";
+import Home from "./Pages/Home/Home";
+import Login from "./Pages/Login/Login";
+import Registration from "./Pages/Registration/Registration";
+import NotFound from "./Pages/NotFound/NotFound";
 import ProtectRoute from "./components/ProtectRoute/ProtectRoute";
-import PostDetails from "./components/PostDetails/PostDetails";
+import PostDetails from "./Pages/PostDetails/PostDetails";
 import UserContextProvider from "./Context/UserContext";
 import EditProfile from "./components/EditProfile/EditProfile";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import { Offline } from "react-detect-offline";
-import Swal from "sweetalert2";
+import Auth from "./Pages/Layout/Auth/Auth";
 
 function App() {
   const route = createBrowserRouter([
@@ -30,8 +29,15 @@ function App() {
         { path: "postdetails/:id", element: <PostDetails /> },
       ],
     },
-    { path: "/login", element: <Login /> },
-    { path: "/signup", element: <Registration /> },
+    {
+      path: "/auth",
+      element: <Auth />,
+      children: [
+        { path: "login", element: <Login /> },
+        { path: "signup", element: <Registration /> },
+      ],
+    },
+
     { path: "*", element: <NotFound /> },
   ]);
 
@@ -39,7 +45,7 @@ function App() {
     defaultOptions: {
       queries: {
         retry: 3,
-        retryDelay: 2000,
+        retryDelay: 1000,
         gcTime: 5000,
         staleTime: 3000,
       },
@@ -49,15 +55,6 @@ function App() {
   return (
     <>
       <QueryClientProvider client={queryClient}>
-        <Offline>
-          {Swal.fire({
-            title: "Error",
-            text: "You are offline",
-            icon: "error",
-            confirmButtonText: "OK",
-            
-          })}
-        </Offline>
         <UserContextProvider>
           <RouterProvider router={route} />
         </UserContextProvider>

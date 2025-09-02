@@ -1,17 +1,13 @@
 import { useContext } from "react";
 import { UserContext } from "../../Context/UserContext";
 import { FaEllipsisH, FaRegTrashAlt } from "react-icons/fa";
-import axios from "axios";
 import { useMutation } from "@tanstack/react-query";
 import Swal from "sweetalert2";
+import deleteComment from "../../API/commentsApi/addCommentApi/deleteComment";
+import Avatar from "../Avatar/Avatar";
 
 function Comments({ comments, isHome, refetch }) {
   const { userData } = useContext(UserContext);
-  function getDate(date) {
-    return `${new Date(date).toLocaleDateString()} ${new Date(
-      date
-    ).toLocaleTimeString()}`;
-  }
 
   const { mutate } = useMutation({
     mutationFn: (commentId) => deleteComment(commentId),
@@ -21,6 +17,11 @@ function Comments({ comments, isHome, refetch }) {
         text: data.data.message,
         icon: "success",
         confirmButtonText: "OK",
+        background: "var(--color-card)",
+        color: "var(--color-card-foreground)",
+        customClass: {
+          popup: "card-enhanced",
+        },
       });
 
       setTimeout(() => {
@@ -34,82 +35,86 @@ function Comments({ comments, isHome, refetch }) {
         text: error.response.data.error,
         icon: "error",
         confirmButtonText: "OK",
+        background: "var(--color-card)",
+        color: "var(--color-card-foreground)",
+        customClass: {
+          popup: "card-enhanced",
+        },
       });
     },
   });
-  async function deleteComment(commentId) {
-    return await axios.delete(
-      `https://linked-posts.routemisr.com/comments/${commentId}`,
-      {
-        headers: {
-          token: localStorage.getItem("token"),
-        },
-      }
-    );
-  }
 
-  function isInvalidPhoto(photo) {
-    if (photo.endsWith("undefined")) {
-      return "https://i.pravatar.cc/100";
-    } else {
-      return photo;
-    }
+  
+
+  function getDate(date) {
+    return new Date(date).toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
   }
 
   const displayedComments = isHome ? comments.slice(0, 1) : comments;
 
   return (
-    <>
+    <div className="space-y-4">
       {displayedComments.length > 0 &&
-        displayedComments.map((comment) => (
+        displayedComments.map((comment, index) => (
           <div
             key={comment._id}
-            className="mt-6 p-4 bg-background/50 rounded-xl backdrop-blur-sm border border-border/30"
+            className="p-4 bg-card/50 rounded-xl backdrop-blur-sm border border-border/30 group animate-fade-in interactive-hover"
+            style={{ animationDelay: `${index * 50}ms` }}
           >
-            <div className="flex items-start space-x-3">
-              <img
-                src={isInvalidPhoto(comment.commentCreator.photo)}
-                alt={comment.commentCreator.name}
-                className="w-8 h-8 rounded-full object-cove"
-              />
+            <div className="flex items-start gap-3">
+              {/* User Avatar */}
+              <Avatar photo={comment.commentCreator.photo} name={comment.commentCreator.name} id={comment.commentCreator._id} />
 
-              <div className="flex-1">
-                <div className="flex items-center space-x-2 mb-1">
-                  <span className="font-medium text-foreground text-sm">
+              {/* Comment Content */}
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="font-semibold text-foreground text-sm">
                     {comment.commentCreator.name}
                   </span>
-                  <span className="text-xs text-muted-foreground">
+                  <span className="text-xs text-muted-foreground bg-muted/50 px-2 py-1 rounded-full">
                     {getDate(comment.createdAt)}
                   </span>
                 </div>
-                <p className="text-sm text-foreground/80">{comment.content}</p>
+                <p className="text-sm text-foreground/90 leading-relaxed">
+                  {comment.content}
+                </p>
               </div>
-            </div>
 
-            {userData._id === comment.commentCreator._id && (
-              <div className="dropdown dropdown-bottom dropdown-end text-muted-foreground hover:text-foreground hover:bg-accent/80 rounded-full h-8 w-8 p-0">
-                <div tabIndex={0} role="button" className="btn m-1">
-                  <FaEllipsisH />
-                </div>
-                <ul
-                  tabIndex={0}
-                  className="w-48 bg-card/95 backdrop-blur-xl border-border/50 shadow-elegant"
-                >
-                  <li>
+              {/* Comment Actions */}
+              {userData._id === comment.commentCreator._id && (
+                <div className="relative flex-shrink-0">
+                  <div className="dropdown dropdown-bottom  dropdown-end">
                     <button
-                      className="text-destructive hover:bg-destructive/10 hover:text-destructive transition-colors cursor-pointer"
-                      onClick={() => mutate(comment._id)}
+                      tabIndex={0}
+                      className="p-2 text-muted-foreground cursor-pointer hover:text-foreground hover:bg-muted/50 rounded-full transition-all duration-300 interactive-hover"
                     >
-                      <FaRegTrashAlt />
-                      Delete
+                      <FaEllipsisH size={14} />
                     </button>
-                  </li>
-                </ul>
-              </div>
-            )}
+                    <ul
+                      tabIndex={0}
+                      className="dropdown-content menu p-2 shadow-elegant bg-card/95 backdrop-blur-xl border border-border/50 rounded-xl min-w-[160px] z-50"
+                    >
+                      <li>
+                        <button
+                          className="flex items-center gap-2 text-destructive hover:bg-destructive/10 hover:text-destructive transition-all duration-300 cursor-pointer px-3 py-2 rounded-lg"
+                          onClick={() => mutate(comment._id)}
+                        >
+                          <FaRegTrashAlt size={14} />
+                          Delete
+                        </button>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
         ))}
-    </>
+    </div>
   );
 }
 
